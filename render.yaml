@@ -1,0 +1,29 @@
+services:
+  # Backend API Service
+  - type: web
+    name: gcash-clone-backend
+    env: node
+    region: singapore
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        sync: false
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
+    healthCheckPath: /api/health
+
+databases:
+  # MongoDB Database (You'll need to set this up separately in MongoDB Atlas)
+  # Update the MONGODB_URI environment variable with your Atlas connection string

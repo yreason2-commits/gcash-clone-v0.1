@@ -1,0 +1,20 @@
+<svg width="240" height="80" viewBox="0 0 240 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="outerRing" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2583FF" />
+      <stop offset="1" stop-color="#0532CC" />
+    </linearGradient>
+    <linearGradient id="innerRing" x1="18" y1="18" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7BC6FF" />
+      <stop offset="1" stop-color="#1056F3" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(12 12)">
+    <path d="M32 4C18.745 4 8 14.745 8 28C8 41.255 18.745 52 32 52C37.615 52 42.791 50.127 47 46.945" stroke="url(#outerRing)" stroke-width="8" stroke-linecap="round" />
+    <path d="M32 16C25.373 16 20 21.373 20 28C20 34.627 25.373 40 32 40H38V34H32C28.686 34 26 31.314 26 28C26 24.686 28.686 22 32 22H38V16H32Z" fill="url(#innerRing)" />
+    <path d="M46 24C42.6863 24 40 26.6863 40 30C40 33.3137 42.6863 36 46 36C49.3137 36 52 33.3137 52 30C52 26.6863 49.3137 24 46 24Z" fill="#6EC7FF" />
+    <path d="M56 18C61.5228 18 66 22.4772 66 28C66 33.5228 61.5228 38 56 38" stroke="#6EC7FF" stroke-width="6" stroke-linecap="round" />
+  </g>
+  <text x="104" y="50" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="36" fill="white">GCash</text>
+</svg>
+

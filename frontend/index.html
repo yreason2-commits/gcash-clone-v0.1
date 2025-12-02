@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="public/321.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GCash</title>
+    
+    <!-- Hide Tidio Email Collection Popups -->
+    <style>
+      /* Hide email collection forms and popups */
+      [data-tidio-el="email-form"],
+      [data-tidio-el="contact-form"],
+      .tidio-email-form,
+      .tidio-contact-form,
+      iframe[src*="email"],
+      div[class*="email-collection"],
+      div[class*="contact-form"] {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+      
+      /* Hide any Tidio modal overlays for email collection */
+      .tidio-modal-overlay,
+      .tidio-popup-overlay {
+        display: none !important;
+      }
+    </style>
+    
+    <!-- Tidio Live Chat & AI Chatbot -->
+    <script>
+      // Multiple loading strategies for Tidio
+      document.addEventListener('DOMContentLoaded', function() {
+        // Method 1: Try direct script loading
+        const script1 = document.createElement('script');
+        script1.src = '//code.tidio.co/kmpnpq7jbntevmmuke3yqyp6qh82gaxl.js';
+        script1.async = true;
+        
+        script1.onload = function() {
+          console.log('✅ Tidio chat widget loaded successfully');
+          
+          // Disable email collection popup
+          setTimeout(() => {
+            if (window.tidioChatApi) {
+              try {
+                // Hide email collection forms
+                window.tidioChatApi.setVisitorData({
+                  email: 'no-email-required@gcash.local', // Dummy email to bypass requirement
+                  skipEmailCollection: true
+                });
+                
+                // Configure to not show email popup
+                window.tidioChatApi.trigger('hideEmailForm');
+                
+                console.log('📧 Email collection disabled for better UX');
+              } catch (error) {
+                console.log('⚠️ Could not disable email collection via API');
+              }
+            }
+          }, 1000);
+        };
+        
+        script1.onerror = function() {
+          console.log('⚠️ Primary loading method failed, trying alternative...');
+          
+          // Method 2: Try with different protocol
+          const script2 = document.createElement('script');
+          script2.src = 'https://code.tidio.co/kmpnpq7jbntevmmuke3yqyp6qh82gaxl.js';
+          script2.async = true;
+          
+          script2.onload = function() {
+            console.log('✅ Tidio loaded via HTTPS');
+            
+            // Disable email collection popup (backup method)
+            setTimeout(() => {
+              if (window.tidioChatApi) {
+                try {
+                  window.tidioChatApi.setVisitorData({
+                    email: 'no-email-required@gcash.local',
+                    skipEmailCollection: true
+                  });
+                  window.tidioChatApi.trigger('hideEmailForm');
+                  console.log('📧 Email collection disabled (backup method)');
+                } catch (error) {
+                  console.log('⚠️ Backup email disable failed');
+                }
+              }
+            }, 1000);
+          };
+          
+          script2.onerror = function() {
+            console.log('❌ All Tidio loading methods failed');
+            console.log('ℹ️ Please check:');
+            console.log('1. API key is correct');  
+            console.log('2. Domain is whitelisted in Tidio');
+            console.log('3. Tidio account is active');
+          };
+          
+          document.head.appendChild(script2);
+        };
+        
+        document.head.appendChild(script1);
+      });
+    </script>
+    
+    <!-- Debug Tidio Loading -->
+    <script>
+      // Debug Tidio loading
+      setTimeout(() => {
+        console.log('🔍 Tidio Debug Check:');
+        console.log('window.tidioChatApi:', window.tidioChatApi);
+        console.log('Tidio elements:', document.querySelectorAll('[id*="tidio"]'));
+        
+        if (window.tidioChatApi) {
+          console.log('✅ Tidio loaded successfully');
+        } else {
+          console.log('❌ Tidio not loaded - using fallback chat');
+        }
+      }, 3000);
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

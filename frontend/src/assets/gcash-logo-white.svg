@@ -1,0 +1,19 @@
+<svg width="200" height="64" viewBox="0 0 200 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer white circle -->
+  <circle cx="24" cy="32" r="22" stroke="#FFFFFF" stroke-width="2.5" fill="none" />
+  
+  <!-- Inner white circle -->
+  <circle cx="24" cy="32" r="16" stroke="#FFFFFF" stroke-width="2" fill="none" />
+  
+  <!-- Letter G (white) -->
+  <path d="M16 32C16 26.48 20.48 22 26 22H32V26H26C22.69 26 20 28.69 20 32C20 35.31 22.69 38 26 38H32V42H26C20.48 42 16 37.52 16 32Z" fill="#FFFFFF" />
+  
+  <!-- Signal waves (3 curved arcs on the right) -->
+  <path d="M46 30C47.1046 30 48 30.8954 48 32C48 33.1046 47.1046 34 46 34" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <path d="M52 26C54.2091 26 56 27.7909 56 30C56 32.2091 54.2091 34 52 34" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <path d="M58 22C61.3137 22 64 24.6863 64 28C64 31.3137 61.3137 34 58 34" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  
+  <!-- GCash text -->
+  <text x="78" y="40" font-family="'Poppins', 'Segoe UI', sans-serif" font-size="28" font-weight="600" fill="#FFFFFF" letter-spacing="0.02em">GCash</text>
+</svg>
+
