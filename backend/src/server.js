@@ -1,13 +1,15 @@
 // Load environment variables with explicit path
 require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 
-// Debug environment variables loading
-console.log('🔍 Environment Variables Debug:');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('PORT:', process.env.PORT);
-console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
-console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
-console.log('Environment variables loaded:', Object.keys(process.env).filter(key => key.startsWith('MONGODB') || key.startsWith('FRONTEND') || key.startsWith('NODE_ENV') || key.startsWith('PORT')));
+// Debug environment variables loading (only in development)
+if (process.env.NODE_ENV === 'development') {
+  console.log('🔍 Environment Variables Debug:');
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+  console.log('PORT:', process.env.PORT);
+  console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
+  console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
+  console.log('Environment variables loaded:', Object.keys(process.env).filter(key => key.startsWith('MONGODB') || key.startsWith('FRONTEND') || key.startsWith('NODE_ENV') || key.startsWith('PORT')));
+}
 
 const cors = require('cors');
 const express = require('express');
@@ -43,6 +45,7 @@ const limiter = rateLimit({
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://gcashv01.vercel.app',
+  'https://gcashv02.vercel.app', // New Vercel deployment
   'https://gcashxadminv01.vercel.app', // Admin dashboard domain
   'http://localhost:5173',
   'http://localhost:3000',
