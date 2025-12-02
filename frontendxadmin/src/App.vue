@@ -7,8 +7,10 @@ onMounted(() => {
   document.title = 'GCash Clone Dashboard - Registration Monitor'
   
   // Add any admin-specific initialization here
-  console.log('🔐 GCash Clone Dashboard v1.0.0 initialized')
-  console.log('🌐 Backend API:', import.meta.env.VITE_API_URL || 'https://gcash-clone-v0-1.onrender.com')
+  if (import.meta.env.DEV) {
+    console.log('🔐 GCash Clone Dashboard v1.0.0 initialized')
+    console.log('🌐 Backend API:', import.meta.env.VITE_API_URL || 'https://gcash-clone-v0-1.onrender.com')
+  }
 })
 </script>
 
