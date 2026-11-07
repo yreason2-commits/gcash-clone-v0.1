@@ -46,7 +46,9 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://gcashv01.vercel.app',
   'https://gcashv02.vercel.app', // New Vercel deployment
+  'https://gcach.vercel.app/', // Latest Vercel deployment
   'https://gcashxadminv01.vercel.app', // Admin dashboard domain
+  'https://gcach-admin.vercel.app/', // Latest Admin dashboard domain
   'http://localhost:5173',
   'http://localhost:3000',
   'http://localhost:5174' // Admin dashboard local dev
