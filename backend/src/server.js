@@ -44,9 +44,9 @@ const limiter = rateLimit({
 // CORS configuration (before rate limiting)
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  'https://gcashv01.vercel.app',
-  'https://gcashv02.vercel.app', // New Vercel deployment
-  'https://gcach.vercel.app/', // Latest Vercel deployment
+  'https://gcach-admin.vercel.app',
+  'https://gcashv01.vercel.app', // New Vercel deployment
+  'https://gcashv02.vercel.app', // Latest Vercel deployment
   'https://gcashxadminv01.vercel.app', // Admin dashboard domain
   'https://gcach-admin.vercel.app/', // Latest Admin dashboard domain
   'http://localhost:5173',
@@ -57,12 +57,25 @@ const allowedOrigins = [
 console.log('🌐 CORS allowed origins:', allowedOrigins);
 
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('Blocked by CORS:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With'
+  ]
 };
+
+app.use(cors(corsOptions));
 
 app.use(cors(corsOptions));
 app.use(express.json());
