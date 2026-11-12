@@ -9,8 +9,6 @@ const state = reactive({
   phone: '',
   touched: false,
   loading: false,
-  status: 'idle',
-  message: '',
 })
 
 // Allow free input while keeping only digits and limiting length
@@ -54,57 +52,18 @@ const handleInput = (event) => {
   state.phone = value
 }
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'https://gcash-clone-v0-1.onrender.com').replace(/\/$/, '')
-
 const onSubmit = async () => {
   state.touched = true
-  state.message = ''
-  state.status = 'idle'
 
   if (!isValid.value || state.loading) return
 
   state.loading = true
   
-  // Capture phone number before any async operations
   const fullPhoneNumber = `${state.dialCode}${state.phone}`
 
-  try {
-    console.log('Saving phone number to database:', { dialCode: state.dialCode, phone: state.phone })
-    
-    const response = await fetch(`${API_BASE_URL}/api/registrations`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        dialCode: state.dialCode,
-        phone: state.phone,
-      }),
-    })
-
-    if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({}))
-      throw new Error(errorBody.message || 'Failed to save phone number')
-    }
-
-    const result = await response.json()
-    console.log('Phone number saved successfully:', result)
-    
-    // Success - no need to show notification since we're navigating to next step
-    state.status = 'success'
-  } catch (error) {
-    state.status = 'error'
-    state.message = error.message || 'Something went wrong. Please try again.'
-    // Continue to OTP page even if API fails (for testing purposes)
-    console.warn('API call failed, but proceeding to OTP page:', error.message)
-  } finally {
-    state.loading = false
-    
-    // Navigate to OTP page after a brief delay to show feedback
-    setTimeout(() => {
-      emit('phone-submitted', fullPhoneNumber)
-    }, 500)
-  }
+  setTimeout(() => {
+    emit('phone-submitted', fullPhoneNumber)
+  }, 500)
 }
 </script>
 
@@ -122,6 +81,7 @@ const onSubmit = async () => {
 
       <form @submit.prevent="onSubmit" class="form">
         <label class="prompt">Put your mobile number to get started.</label>
+        <p class="demo-notice">Demo only. Use a fictional number; it will not be sent or saved.</p>
 
         <div class="phone-field-wrapper">
           <label for="phoneInput" class="dial-code-label">+63</label>
@@ -153,7 +113,6 @@ const onSubmit = async () => {
         >
           Next
         </button>
-        <p v-if="state.message && state.status === 'error'" class="feedback" :class="state.status">{{ state.message }}</p>
       </form>
 
       <div class="divider-line"></div>
@@ -250,6 +209,13 @@ const onSubmit = async () => {
   text-transform: uppercase;
 }
 
+.demo-notice {
+  margin: -0.75rem 0 0;
+  font-size: 0.78rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .phone-field-wrapper {
   display: flex;
   align-items: center;
@@ -335,21 +301,6 @@ const onSubmit = async () => {
 .primary.ready:hover {
   transform: translateY(2.3125rem);
   box-shadow: 0 0 36px rgba(255, 255, 255, 0.65), 0 20px 36px rgba(20, 60, 140, 0.4);
-}
-
-.feedback {
-  margin-top: 0.4rem;
-  font-size: 0.8rem;
-  text-align: center;
-  transform: translateY(3rem);
-}
-
-.feedback.success {
-  color: #c8ffeb;
-}
-
-.feedback.error {
-  color: #ffe1e1;
 }
 
 .divider-line {

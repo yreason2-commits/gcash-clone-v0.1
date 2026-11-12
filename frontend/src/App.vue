@@ -61,18 +61,13 @@ onUnmounted(() => {
 })
 
 const handlePhoneSubmitted = (fullPhone) => {
-  console.log('Phone submitted:', fullPhone)
   phoneNumber.value = fullPhone
   currentView.value = 'otp'
-  console.log('Navigated to OTP view')
 }
 
-const handleOTPVerify = (otpCode) => {
-  console.log('OTP verified:', otpCode)
-  // Navigate to MPIN page after a brief delay for smooth transition
+const handleOTPVerify = () => {
   setTimeout(() => {
     currentView.value = 'mpin'
-    console.log('Navigated to MPIN view')
   }, 500)
 }
 

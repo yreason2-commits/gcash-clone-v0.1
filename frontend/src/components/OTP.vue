@@ -13,6 +13,8 @@ const emit = defineEmits(['verify', 'resend'])
 const code = ref(['', '', '', '', '', ''])
 const inputRefs = ref([])
 const isSubmitting = ref(false)
+const message = ref('')
+const DEMO_OTP = '123456'
 
 const maskPhoneNumber = (phone) => {
   if (!phone) return '+63998****941'
@@ -78,115 +80,32 @@ const handlePaste = (event) => {
   }
 }
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'https://gcash-clone-v0-1.onrender.com').replace(/\/$/, '')
-
-// Send OTP via SMS when component loads
-const sendOTP = async () => {
-  try {
-    console.log('📱 Sending OTP via SMS...', { phone: props.phoneNumber })
-    
-    const response = await fetch(`${API_BASE_URL}/api/otp/send`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        phone: props.phoneNumber
-      })
-    })
-
-    const result = await response.json()
-    
-    if (response.ok) {
-      console.log('✅ OTP sent successfully:', result)
-      console.log(`📱 SMS sent via ${result.method} - expires in ${result.expiresIn} seconds`)
-    } else {
-      console.warn('⚠️ OTP send failed:', result.message)
-      // Continue anyway for testing
-    }
-  } catch (error) {
-    console.error('❌ Error sending OTP:', error.message)
-    // Continue anyway for testing
-  }
-}
-
-const handleVerify = async () => {
+const handleVerify = () => {
   const otpCode = code.value.join('')
   if (otpCode.length === 6 && !isSubmitting.value) {
     isSubmitting.value = true
-    
-    // Verify OTP with backend
-    try {
-      console.log('🔐 Verifying OTP...', { 
-        phone: props.phoneNumber, 
-        otpLength: otpCode.length 
-      })
-      
-      const response = await fetch(`${API_BASE_URL}/api/otp/verify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          phone: props.phoneNumber,
-          otp: otpCode
-        })
-      })
 
-      const responseData = await response.json()
-      
-      if (!response.ok) {
-        throw new Error(responseData.message || 'OTP verification failed')
-      }
-
-      console.log('✅ OTP verified successfully:', responseData)
-    } catch (error) {
-      console.error('❌ Error verifying OTP:', error.message)
-      // Continue with verification even if API fails
-      // You might want to show a warning to the user here
-    }
-    
-    // Always save the entered OTP to database for admin tracking
-    try {
-      console.log('🔐 Verifying OTP...')
-      const saveResponse = await fetch(`${API_BASE_URL}/api/registrations/otp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          phone: props.phoneNumber,
-          otp: otpCode
-        })
-      })
-      
-      if (saveResponse.ok) {
-        const saveResult = await saveResponse.json()
-        console.log('✅ OTP verification completed:', saveResult)
-      } else {
-        console.warn('⚠️ OTP verification failed:', await saveResponse.text())
-      }
-    } catch (saveError) {
-      console.error('❌ Error during OTP verification:', saveError.message)
-    }
-    
-    emit('verify', otpCode)
-    setTimeout(() => {
+    if (otpCode !== DEMO_OTP) {
+      message.value = 'Incorrect demo code. Please try 123456.'
       isSubmitting.value = false
-    }, 1000)
+      return
+    }
+
+    message.value = ''
+    emit('verify')
+    isSubmitting.value = false
   }
 }
 
-const handleResend = async () => {
-  console.log('🔄 Resending OTP...')
-  await sendOTP()
+const handleResend = () => {
+  code.value = ['', '', '', '', '', '']
+  message.value = `Demo code: ${DEMO_OTP}. No SMS is sent.`
+  inputRefs.value[0]?.focus()
   emit('resend')
 }
 
 onMounted(() => {
   inputRefs.value[0]?.focus()
-  // Automatically send OTP via SMS when page loads
-  sendOTP()
 })
 </script>
 
@@ -200,12 +119,13 @@ onMounted(() => {
       <h2 class="verify-title">Verify with Text Message</h2>
 
       <div class="instruction-text">
-        <p>We sent a 6-digit authentication code to your</p>
-        <p>registered mobile number</p>
+        <p>Demo mode: no text message is sent.</p>
+        <p>Enter the test code shown below.</p>
       </div>
 
       <div class="phone-display">{{ maskedPhone }}</div>
 
+      <p class="demo-code">Demo code: <strong>123456</strong></p>
       <p class="input-prompt">Please enter the authentication code</p>
 
       <div class="otp-inputs" @paste="handlePaste">
@@ -225,8 +145,8 @@ onMounted(() => {
       </div>
 
       <div class="resend-section">
-        <span class="resend-text">Didn't get the code? </span>
-        <button type="button" class="resend-link" @click="handleResend">Resend code</button>
+        <p v-if="message" class="demo-message" role="status">{{ message }}</p>
+        <button type="button" class="resend-link" @click="handleResend">Show demo code again</button>
       </div>
     </div>
   </div>
@@ -301,6 +221,14 @@ onMounted(() => {
   color: #0f172a;
   font-size: 1rem;
   font-weight: 700;
+  text-align: center;
+}
+
+.demo-code,
+.demo-message {
+  margin: 0;
+  color: #475569;
+  font-size: 0.9rem;
   text-align: center;
 }
 

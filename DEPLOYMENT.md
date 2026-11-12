@@ -2,6 +2,21 @@
 
 This guide will help you deploy your Vue.js frontend and Express backend to the public.
 
+## Current frontend demo
+
+The phone/OTP flow is frontend-only: use a fictional phone number and test OTP
+`123456`. It does not send SMS or send/save the phone number, OTP, or PIN. This
+demo does not require the backend or a `VITE_API_URL`.
+
+For Vercel, set the project root directory to `frontend`, use the Vite preset,
+build command `npm run build`, and output directory `dist`. Redeploy the
+frontend after pushing the changes. The existing backend can remain deployed,
+but it is not used by this demo flow.
+
+The backend/SMS steps below describe the legacy API integration, not the
+frontend-only demo. Real authentication codes are intentionally not part of
+this demo.
+
 ## Step 1: Build the Frontend
 
 First, build your Vue.js application for production:
